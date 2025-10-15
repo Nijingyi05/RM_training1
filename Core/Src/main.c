@@ -18,7 +18,9 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "dma.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 
 /* Private includes ----------------------------------------------------------*/
@@ -87,10 +89,12 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_TIM2_Init();
+  MX_USART1_UART_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
-  App_Init(); //初始化业务模块
-  App_MainLoop();  // 主循环保护
+app_init();  // 调用你的初始化函数
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,7 +102,8 @@ int main(void)
   while (1)
   {
     /* USER CODE END WHILE */
-
+        app_main_loop();  // 调用你的主循环处理函数
+        HAL_Delay(1);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
@@ -176,4 +181,14 @@ void assert_failed(uint8_t *file, uint32_t line)
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
   /* USER CODE END 6 */
 }
+
+/* 定时器中断回调 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM2) {
+        /* USER CODE BEGIN Callback 0 */
+        app_timer_interrupt_handler();  // 调用你的中断处理函数
+        /* USER CODE END Callback 0 */
+    }
+}
+
 #endif /* USE_FULL_ASSERT */

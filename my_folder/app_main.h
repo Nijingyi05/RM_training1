@@ -1,8 +1,22 @@
-#pragma once
-#include "main.h" // 包含CubeMX生成的HAL库定义
+#ifndef APP_MAIN_H
+#define APP_MAIN_H
 
-// 业务初始化函数
-void App_Init(void);
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-// 业务主循环函数
-void App_MainLoop(void);
+#include "main.h"
+
+// 声明 htim2 为外部变量（关键修复）
+extern TIM_HandleTypeDef htim2;
+
+// 函数声明
+void app_init(void);
+void app_main_loop(void);
+void app_timer_interrupt_handler(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* APP_MAIN_H */

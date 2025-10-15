@@ -1,23 +1,22 @@
-/*
- * @Author: Ni Jingyi 3230102776@zju.edu.cn
- * @Date: 2025-10-15 14:33:22
- * @LastEditors: Ni Jingyi 3230102776@zju.edu.cn
- * @LastEditTime: 2025-10-15 14:34:26
- * @FilePath: \Lab01\my_folder\app_main.c
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- */
 #include "app_main.h"
 
-void App_Init() {
-    // 初始化业务模块（非硬件相关）
+volatile uint32_t ms_ticks = 0;
+
+// 应用程序初始化
+void app_init(void) {
+    // 现在 htim2 可以通过 extern 声明访问
+    HAL_TIM_Base_Start_IT(&htim2);
 }
 
-void App_MainLoop() {
-    while (1) {
-        // 业务逻辑示例：LED闪烁
-        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET); // 点亮
-        HAL_Delay(500);
-        HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_SET);   // 熄灭
-        HAL_Delay(500);
+void app_timer_interrupt_handler(void) {
+    ms_ticks++;
+}
+
+void app_main_loop(void) {
+    static uint32_t last_toggle = 0;
+    
+    if (ms_ticks - last_toggle >= 500) {
+        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+        last_toggle = ms_ticks;
     }
 }

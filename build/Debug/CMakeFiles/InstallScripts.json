@@ -1,8 +1,0 @@
-{
-	"InstallScripts" : 
-	[
-		"C:/Users/Nijing Yi/Desktop/RM/projects/Lab01/build/Debug/cmake_install.cmake",
-		"C:/Users/Nijing Yi/Desktop/RM/projects/Lab01/build/Debug/cmake/stm32cubemx/cmake_install.cmake"
-	],
-	"Parallel" : false
-}
